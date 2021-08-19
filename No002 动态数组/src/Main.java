@@ -6,6 +6,9 @@ public class Main {
       myArrayList.add(789);
       myArrayList.add(111);
       myArrayList.add(222);
+      myArrayList.add(789);
+      myArrayList.add(111);
+      myArrayList.add(222);
       myArrayList.add(6,99999);
       System.out.println(myArrayList);
   }

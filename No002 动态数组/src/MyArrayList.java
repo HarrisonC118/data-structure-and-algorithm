@@ -1,7 +1,3 @@
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
-import java.util.Arrays;
-
 public class MyArrayList<E> {
     /**
      * size: 元素的数量
