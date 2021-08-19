@@ -75,7 +75,7 @@ public class MyArrayList<E> {
     public E remove(int index) {
         rangeCheck(index);
         E old = elements[index];
-        for (int i = index + 1; i < size - 1; i++) {
+        for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements [i];
         }
         // 把最后一个值清空
@@ -125,8 +125,8 @@ public class MyArrayList<E> {
         // 扩容
         ensureCapacity(size + 1);
 
-        for (int i = size - 1; i >= index; i--) {
-          elements[i + 1] = elements[i];
+        for (int i = size; i > index; i--) {
+          elements[i] = elements[i-1];
         }
         elements[index] = element;
         size++;
