@@ -1,5 +1,7 @@
 package 链表;
 
+import java.util.List;
+
 /**
  * https://leetcode-cn.com/problems/reverse-linked-list/
  * @author: HatcherCheung
@@ -9,29 +11,34 @@ public class _206_反转链表 {
     public static void main(String[] args) {
 
     }
-
-    public ListNode reverseList(ListNode head) {
+    public ListNode reverseList2(ListNode head) {
         // 递归
-//        if(head == null || head.next == null) {
-//            return head;
-//        }
-//        ListNode newHead = reverseList(head.next);
-//        head.next.next = head;
-//        head.next = null;
-//        return newHead;
-//        ListNode listNode = head;
-        // 非递归
-        ListNode newList = new ListNode();
-        while(head != null ){
-            // 临时变量，存储head的next指向的Node
-            ListNode tmp = head.next;
-            head.next = newList;
-            newList = head;
-            head = tmp;
+        if(head == null || head.next == null) {
+            // head.next == null 就表示已经分解成了最小子问题，因为只有一个节点了
+            return head;
         }
-        return newList;
+        // 递
+        ListNode newHead = reverseList2(head.next);
+        // 归
+        head.next.next = head;
+        head.next = null;
+        return newHead;
     }
 
+    public ListNode reverseList1(ListNode head) {
+        // 非递归
+        ListNode prev = null;
+        ListNode curr = head;
+        while(curr != null) {
+            // 当curr不是null的情况下才能有next，不然会空指针异常
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        // 因为curr已经是null了，所以返回prev
+        return prev;
+    }
     class ListNode {
         int val;
         ListNode next;
