@@ -1,3 +1,5 @@
+package 单项链表;
+
 public interface MyList<E> {
     static final int ELEMENT_NOT_FOUND = -1;
     /**

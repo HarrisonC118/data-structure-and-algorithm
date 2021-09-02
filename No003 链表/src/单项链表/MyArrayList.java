@@ -1,3 +1,5 @@
+package 单项链表;
+
 public class MyArrayList<E> extends AbstractList<E> {
     /**
      * size: 元素的数量
@@ -43,7 +45,25 @@ public class MyArrayList<E> extends AbstractList<E> {
         }
         // 把最后一个值清空
         elements[--size] = null;
+        trim();
         return old;
+    }
+    /**
+     * 缩容
+     */
+    public void trim() {
+        int capacity = elements.length;
+        // 剩余空间小于一半就不缩容
+        if (size >= (capacity >> 1) || capacity <= DEFAULT_CAPACITY) {
+            return;
+        }
+        // 缩容
+        int newCapacity = capacity >> 1;
+        E[] newElements = (E[]) new Object[newCapacity];
+        if (size >= 0) {
+            System.arraycopy(elements, 0, newElements, 0, size);
+        }
+        elements = newElements;
     }
 
 
@@ -150,7 +170,7 @@ public class MyArrayList<E> extends AbstractList<E> {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("MyArrayList{").append("size=").append(size).append(", elements=[");
+        stringBuilder.append("单项链表.MyArrayList{").append("size=").append(size).append(", elements=[");
         for (int i = 0; i < size; i++) {
             if(i != 0){
                 stringBuilder.append(", ");
