@@ -4,7 +4,7 @@ import 单向链表.AbstractList;
 
 /**
  * @author: HatcherCheung
- * Date:  2021/8/28
+ * Date:  2021/9/2
  */
 public class MyCircleLinkedList<E> extends AbstractList<E> {
     private Node<E> first;

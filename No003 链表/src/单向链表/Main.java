@@ -1,4 +1,4 @@
-package 单项链表;
+package 单向链表;
 
 public class Main {
   public static void main(String[] args) {

@@ -1,16 +1,38 @@
-package 单项链表;
+package 双向循环链表;
+
+import 单向链表.AbstractList;
 
 /**
  * @author: HatcherCheung
- * Date:  2021/8/28
+ * Date:  2021/9/2
  */
-public class MyLinkedList<E> extends AbstractList<E> {
+public class MyCircleLinkedList<E> extends AbstractList<E> {
+    /**
+     * first是头结点
+     * last是尾结点
+     */
     private Node<E> first;
+    private Node<E> last;
+    /**
+     * 节点类
+     * @param <E>
+     */
+    private static class Node<E> {
+        private E element; // 当前节点的数值
+        private Node<E> prev; // 存放上一个节点的地址
+        private Node<E> next; // 存放了下一个节点的地址
+        public Node(Node<E> prev, E element,Node<E> next) {
+            this.prev = prev;
+            this.element = element;
+            this.next = next;
+        }
+    }
 
     @Override
     public void clear() {
         size = 0;
         first = null;
+        last = null;
     }
 
     /**
@@ -46,15 +68,30 @@ public class MyLinkedList<E> extends AbstractList<E> {
      */
     @Override
     public void add(int index, E element) {
-        // 1. 先获取添加节点位置的前一个节点，把前一个节点next的值指向要添加的节点
-        // 2. 把要添加的节点的next值设置为替换前这个节点的地址
-        // 3. 如果是0，就把新节点的next的值换成first的值,然后把first这个头结点的值设置为这个新节点的地址
         rangeCheckForAdd(index);
-        if (index == 0){
-            first = new Node<>(element, first);
+        if (index == size) {
+            // 往最后添加元素
+            // 特殊情况：当链表是空的时候，first和last都是null
+            Node<E> oldLast = last;
+            last = new Node<>(oldLast, element, null);
+            if (oldLast == null) {
+                // 链表添加第一个元素
+                first = last;
+                first.next = first;
+                first.prev = first;
+            } else {
+                oldLast.next = last;
+                first.prev = last;
+            }
         } else {
-            Node<E> preNode = node(index - 1);
-            preNode.next = new Node<>(element,preNode.next);
+            Node<E> next = node(index);
+            Node<E> prev = next.prev;
+            Node<E> node = new Node<E>(prev, element, first);
+            next.prev = node;
+            prev.next = node;
+            if (next == first) {
+                first = node;
+            }
         }
         size ++;
     }
@@ -68,13 +105,24 @@ public class MyLinkedList<E> extends AbstractList<E> {
     public E remove(int index) {
         rangeCheck(index);
         Node<E> node = first;
-        if(index == 0) {
-            first = first.next;
+        if (size == 1) {
+            first = null;
+            last = null;
         } else {
-            Node<E> prevNode = node(index - 1);
-            node = prevNode.next;
-            prevNode.next = node.next;
+            Node<E> prev = node.prev;
+            Node<E> next = node.next;
+            prev.next = next;
+            next.prev = prev;
+
+            if (node == first) { // index == 0
+                first = next;
+            }
+
+            if (node == last) { // index == size - 1
+                last = prev;
+            }
         }
+
         size--;
         return node.element;
     }
@@ -114,23 +162,16 @@ public class MyLinkedList<E> extends AbstractList<E> {
         // 查看索引是否有效
         rangeCheck(index);
         Node<E> node = first;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
+        if (index < (size >> 1)) {
+            for (int i = 0; i < index; i++) {
+                node = node.next;
+            }
+        } else {
+            for (int i = size - 1; i > index; i--) {
+                node = node.prev;
+            }
         }
         return node;
-    }
-
-    /**
-     * 节点类
-     * @param <E>
-     */
-    private static class Node<E> {
-        private E element; // 当前节点的数值
-        private Node<E> next; // 存放了下一个节点的地址
-        public Node(E element,Node<E> next) {
-            this.element = element;
-            this.next = next;
-        }
     }
 
     /**

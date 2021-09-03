@@ -1,38 +1,16 @@
-package 双向链表;
-
-import 单向链表.AbstractList;
+package 单向链表;
 
 /**
  * @author: HatcherCheung
  * Date:  2021/8/28
  */
 public class MyLinkedList<E> extends AbstractList<E> {
-    /**
-     * first是头结点
-     * last是尾结点
-     */
     private Node<E> first;
-    private Node<E> last;
-    /**
-     * 节点类
-     * @param <E>
-     */
-    private static class Node<E> {
-        private E element; // 当前节点的数值
-        private Node<E> prev; // 存放上一个节点的地址
-        private Node<E> next; // 存放了下一个节点的地址
-        public Node(Node<E> prev, E element,Node<E> next) {
-            this.prev = prev;
-            this.element = element;
-            this.next = next;
-        }
-    }
 
     @Override
     public void clear() {
         size = 0;
         first = null;
-        last = null;
     }
 
     /**
@@ -68,38 +46,15 @@ public class MyLinkedList<E> extends AbstractList<E> {
      */
     @Override
     public void add(int index, E element) {
-        rangeCheckForAdd(index);
-        if (index == size) {
-            // 往最后添加元素
-            // 特殊情况：当链表是空的时候，first和last都是null
-            Node<E> newNode;
-            if (size == 0) {
-                newNode = new Node<>(null, element, null);
-                first = newNode;
-            } else {
-                // 如果原来的链表不是null，那就让newNode的next是null, newNode的prev指向以前的last，再更新last为newNode
-                newNode = new Node<>(last, element, null);
-                // 以前last节点的next指向新的newNode
-                last.next = newNode;
-            }
-            last = newNode;
-
-        }
         // 1. 先获取添加节点位置的前一个节点，把前一个节点next的值指向要添加的节点
         // 2. 把要添加的节点的next值设置为替换前这个节点的地址
         // 3. 如果是0，就把新节点的next的值换成first的值,然后把first这个头结点的值设置为这个新节点的地址
-        // node是当前位置原来的节点
-        Node<E> node = node(index);
-        // 先把新节点的上一个节点和下一个节点定好
-        Node<E> newNode = new Node<E>(node.prev, element, node);
-        // 更改上一个节点的next和下一个节点的prev，都指向新的node
-        node.prev = newNode;
-        // 如果要在第一个节点处添加节点，那prev就是Null
-        if( node.prev == null) {
-            // 要把新节点作为第一个节点插进去，只需要让first指向newNode就可以了
-            first = newNode;
+        rangeCheckForAdd(index);
+        if (index == 0){
+            first = new Node<>(element, first);
         } else {
-            node.prev.next = newNode;
+            Node<E> preNode = node(index - 1);
+            preNode.next = new Node<>(element,preNode.next);
         }
         size ++;
     }
@@ -112,21 +67,13 @@ public class MyLinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-
-        Node<E> node = node(index);
-        Node<E> prev = node.prev;
-        Node<E> next = node.next;
-        // index == 0
-        if (prev == null) {
-            first = node.next;
+        Node<E> node = first;
+        if(index == 0) {
+            first = first.next;
         } else {
-            prev.next = next;
-        }
-        // index == size - 1
-        if (next == null) {
-            last = node.prev;
-        } else {
-            next.prev = prev;
+            Node<E> prevNode = node(index - 1);
+            node = prevNode.next;
+            prevNode.next = node.next;
         }
         size--;
         return node.element;
@@ -167,16 +114,23 @@ public class MyLinkedList<E> extends AbstractList<E> {
         // 查看索引是否有效
         rangeCheck(index);
         Node<E> node = first;
-        if (index < (size >> 1)) {
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-        } else {
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
         return node;
+    }
+
+    /**
+     * 节点类
+     * @param <E>
+     */
+    private static class Node<E> {
+        private E element; // 当前节点的数值
+        private Node<E> next; // 存放了下一个节点的地址
+        public Node(E element,Node<E> next) {
+            this.element = element;
+            this.next = next;
+        }
     }
 
     /**
