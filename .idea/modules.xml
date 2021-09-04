@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/No001 菲波那切数列/No001 菲波那切数列.iml" filepath="$PROJECT_DIR$/No001 菲波那切数列/No001 菲波那切数列.iml" />
       <module fileurl="file://$PROJECT_DIR$/No002 动态数组/No002 动态数组.iml" filepath="$PROJECT_DIR$/No002 动态数组/No002 动态数组.iml" />
       <module fileurl="file://$PROJECT_DIR$/No003 链表/No003 链表.iml" filepath="$PROJECT_DIR$/No003 链表/No003 链表.iml" />
+      <module fileurl="file://$PROJECT_DIR$/No004 栈/No004 栈.iml" filepath="$PROJECT_DIR$/No004 栈/No004 栈.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/data-structure-and-algorithm.iml" filepath="$PROJECT_DIR$/.idea/data-structure-and-algorithm.iml" />
     </modules>
   </component>
